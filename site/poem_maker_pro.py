@@ -5,7 +5,7 @@ import tornado.ioloop
 import os.path
 
 from tornado.options import define ,options
-define("port",default=5005,help="run on the given port",type=int)
+define("port",default=8108,help="run on the given port",type=int)
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
@@ -19,11 +19,12 @@ class PoemPageHandler(tornado.web.RequestHandler):
         noun4=self.get_argument('noun4')
         self.render('poem.html',roads=noun1,wood=noun2,made=noun3,difference=noun4)
 
-    if __name__=='__main__':
-        tornado.options.parse_command_line()
-        app=tornado.web.Application(handlers=[(r'/',IndexHandler),(r'/poem',PoemPageHandler)]
-                ,template_path=os.path.join(os.path.dirname(__file__),"templates")
+
+if __name__=='__main__':
+    tornado.options.parse_command_line()
+    app=tornado.web.Application(handlers=[(r'/',IndexHandler),(r'/poem',PoemPageHandler)]
+                ,template_path=os.path.join(os.path.dirname(__file__),"templates"),  # debug=True
          )
-        http_server=tornado.httpserver.HTTPServer(app)
-        http_server.listen(options.port)
-        tornado.ioloop.IOLoop.instance().start()
+    http_server=tornado.httpserver.HTTPServer(app)
+    http_server.listen(options.port)
+    tornado.ioloop.IOLoop.instance().start()
